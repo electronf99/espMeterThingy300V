@@ -4,32 +4,34 @@ import machine
 import time
 
 
-frequency = 5000
-duty=32768
+frequency = 500
+duty=0
 
-m1_volt_pin = machine.Pin(6)
+m1_volt_pin = machine.Pin(1)
 m1_volt_meter = PWM(m1_volt_pin)
 m1_volt_meter.freq(frequency)
 print(duty)
 
 dir=0
+inc = 100
 try:
     while 1==1:
         print(duty)
         m1_volt_meter.duty_u16(int(duty))
         print("*******************")
 
-        time.sleep(0.01)
+        time.sleep(0.05)
         print(duty)
         if(dir==0):
-            duty += 100
+            duty += inc
         if(dir==-1):
-            duty -= 100
+            duty -= inc
         
-        if duty > 60000:
+        if duty > 50000:
             dir=-1
-        if duty < 101:
+        if duty < 1000:
             dir=0
+
 except KeyboardInterrupt:
     print("Ctrl-C Pressed")
 finally:
