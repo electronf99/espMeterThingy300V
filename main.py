@@ -44,7 +44,7 @@ micropython.alloc_emergency_exception_buf(256)  # safer error text in IRQ
 # ------------------------
 # PWM (meters)
 # ------------------------
-frequency = 2000
+frequency = 10000
 m1_volt_pin = machine.Pin(1)
 m1_volt_meter = PWM(m1_volt_pin)
 m1_volt_meter.freq(frequency)
@@ -242,12 +242,13 @@ if __name__ == "__main__":
         # Register on_write ONCE (BLESimplePeripheral queues it internally)
         sp.on_write(on_rx)
         icon = 0
-        
+        np[0] = (000, 000, 255)
+        np.write()
 
         while True:
             if sp.is_connected():
                 has_connected = True
-                np[0] = (80, 255, 0)
+                np[0] = (133, 255, 1)
                 np.write()
                 #run_meter_down()
                 sleep(1)
@@ -260,7 +261,8 @@ if __name__ == "__main__":
                 fail_count += 1
 
                 #print(f"Not Connected Fail Count {fail_count}")
-                if fail_count == 5:
+                sleep(0.5)
+                if fail_count == 25:
                     np[0] = (000, 000, 255)
                     np.write()
                     run_meter_down()
